@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <style>
+    .new-slider-container{
+      max-width: 800px;
+      margin: 0 auto;
+    }
+   .slick-prev::before, .slick-next::before{
+      color: red;
+    }
+    .progres-box{
+      position: relative;
+    }
+    #progress-bar{
+      background:yellow;
+      height: 5px;
+      width: 100%;
+    }
+    #progress-active{
+      background: green;
+      height: 5px;
+      width: 25%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="new-slider-container">
+    <div class="news-slider">
+      <div><h3>1</h3></div>
+      <div><h3>2</h3></div>
+      <div><h3>3</h3></div>
+      <div><h3>4</h3></div>
+      <div><h3>5</h3></div>
+      <div><h3>6</h3></div>
+    </div>
+    <p id="active-slide">Currently active slide: <span id="active-slide-number">0</span></p>
+    <p id="active-slide">Currently active slide: <span id="totla-slide"></span></p>
+      <div class="progres-box">
+        <div id="progress-bar"></div>
+        <div id="progress-active"></div>
+      </div>
+  </div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script>
+    $(document).ready(function(){
+    // Initialize the slider
+    $('.news-slider').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: false,
+      autoplaySpeed: 2000,
+      arrows: true
+    });
+
+    // Get and log the total number of items
+    var totalItems = $('.news-slider').slick('getSlick').slideCount;
+    $('#totla-slide').text(totalItems);
+
+    // Set up progress bar
+    var progressBar = $('#progress-bar');
+    var progressActive = $('#progress-active');
+
+    function updateProgressBar(currentSlide) {
+      // Calculate the percentage completion
+      var percentage = (currentSlide + 1) / totalItems * 100;
+
+      // Update progress bar width
+      progressActive.css('width', percentage + '%');
+    }
+
+    // Set slide number 1 as active by default
+    $('.news-slider').slick('slickGoTo', 0);
+    updateProgressBar(0);
+
+    // Update progress bar on slide change
+    $('.news-slider').on('afterChange', function(event, slick, currentSlide){
+      $('#active-slide-number').text(currentSlide + 1);
+      updateProgressBar(currentSlide);
+      console.log('Active number:', currentSlide);
+    });
+  });
+  </script>
+</body>
+</html>
